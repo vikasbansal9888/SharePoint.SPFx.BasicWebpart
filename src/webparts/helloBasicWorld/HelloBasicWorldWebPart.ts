@@ -8,10 +8,8 @@ import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './HelloBasicWorldWebPart.module.scss';
 import * as strings from 'HelloBasicWorldWebPartStrings';
+import { IHelloBasicWorldWebPartProps } from './IHelloBasicWorldWebPartProps';
 
-export interface IHelloBasicWorldWebPartProps {
-  description: string;
-}
 
 export default class HelloBasicWorldWebPart extends BaseClientSideWebPart<IHelloBasicWorldWebPartProps> {
 

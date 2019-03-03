@@ -1,4 +1,4 @@
-## share-point-sp-fx-basic-webpart
+## SharePoint SPFx basic webpart
 
 This is where you include your WebPart documentation.
 
