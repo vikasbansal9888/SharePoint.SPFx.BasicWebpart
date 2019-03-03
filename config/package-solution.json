@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "share-point-sp-fx-basic-webpart-client-side-solution",
+    "id": "7e8a2f55-dee2-4393-a160-0d4c26b6172f",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true
+  },
+  "paths": {
+    "zippedPackage": "solution/share-point-sp-fx-basic-webpart.sppkg"
+  }
+}
