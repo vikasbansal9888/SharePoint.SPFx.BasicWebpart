@@ -20,7 +20,7 @@
     "description": { "default": "HelloBasicWorld description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "HelloBasicWorld"
+      "description": "Hello Basic World"
     }
   }]
 }
