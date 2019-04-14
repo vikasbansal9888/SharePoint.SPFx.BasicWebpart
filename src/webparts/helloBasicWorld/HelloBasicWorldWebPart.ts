@@ -18,39 +18,59 @@ import {
   PropertyPaneDynamicField,
   PropertyPaneDynamicFieldSet
 } from "@microsoft/sp-webpart-base";
+
 import { escape } from "@microsoft/sp-lodash-subset";
 
 import styles from "./HelloBasicWorldWebPart.module.scss";
 import * as strings from "HelloBasicWorldWebPartStrings";
 import { IHelloBasicWorldWebPartProps } from "./IHelloBasicWorldWebPartProps";
+import { Constants } from "../../Utilities/Constants";
 
-export default class HelloBasicWorldWebPart extends BaseClientSideWebPart<
-  IHelloBasicWorldWebPartProps
-> {
+export default class HelloBasicWorldWebPart extends BaseClientSideWebPart<IHelloBasicWorldWebPartProps> {
+
   public render(): void {
+    console.log(this.properties.wp_prop_link);
+    
     this.domElement.innerHTML = `
       <div class="${styles.helloBasicWorld}">
         <div class="${styles.container}">
           <div class="${styles.row}">
+            <span class="${styles.title}">Welcome to SharePoint!</span>
+            <p class="${styles.subTitle}">Customize SharePoint experiences using Web Parts.</p>
+          </div>
+
+          <div class="${styles.row}">
+            <div>
+              <span class="${styles.title}">Basic Settings Page1</span>
+            </div>
             <div class="${styles.column}">
-              <span class="${styles.title}">Welcome to SharePoint!</span>
-              <p class="${
-                styles.subTitle
-              }">Customize SharePoint experiences using Web Parts.</p>
-              <p class="${styles.description}">${escape(
-      this.properties.description
-    )}</p>
-              <p class="${styles.description}">${escape(
-      this.properties.wp_prop_text
-    )}</p>
-              <p class="${styles.description}">${escape(
-      this.properties.wp_prop_multiline
-    )}</p>
-              <a href="" class="${styles.button}">
-                <span class="${styles.label}">Learn more</span>
-              </a>
+              <span class="${styles.subTitle}">Basic Group Name1</span>
+              <p class="${styles.description}">Name: ${escape(this.properties.wp_prop_text)}</p>
+              <p class="${styles.description}">Details: ${escape(this.properties.wp_prop_multiline)}</p>
+            </div>
+            <div>
+              <span class="${styles.subTitle}">Basic Group Name2</span>              
+              <p class="${styles.description}">Select checkbox value: ${escape(this.properties.wp_prop_checkbox)}</p>
+              <p class="${styles.description}">My Blog: ${ this.properties.wp_prop_link }</p>
             </div>
           </div>
+
+          <div class="${styles.row}">
+            <div>
+              <span class="${styles.title}">Advanced Settings Page2</span>
+            </div>
+            <div class="${styles.column}">
+              <span class="${styles.subTitle}">Advanced Group Name1</span>              
+              <p class="${styles.description}">Enable or Disabled: ${this.properties.wp_prop_toggle}</p>
+              <p class="${styles.description}">Slider value: ${escape(this.properties.wp_prop_slider)}</p>
+            </div>
+            <div>
+              <span class="${styles.subTitle}">Advanced Group Name2</span>              
+              <p class="${styles.description}">Choose color: ${escape(this.properties.wp_prop_dropdown)}</p>
+              <p class="${styles.description}">File type: ${escape(this.properties.wp_prop_choicegroup)}</p>
+            </div>
+          </div>
+
         </div>
       </div>`;
   }
@@ -68,75 +88,74 @@ export default class HelloBasicWorldWebPart extends BaseClientSideWebPart<
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription
+            description: strings.PropertyPanePage1_Description
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: strings.BasicGroupName1,
               groupFields: [
-                PropertyPaneHorizontalRule(),
+                //PropertyPaneHorizontalRule(),
                 // PropertyPaneTextField('description', {
                 //   label: strings.DescriptionFieldLabel
                 // }),
-                PropertyPaneLabel("wp_prop_label", {
-                  text: "please enter the mandatory fields",
+                PropertyPaneLabel(Constants.WP_Prop_Label, {
+                  text: strings.WP_prop_label_text,
                   required: true
                 }),
                 // PropertyPaneLabel("wp_prop_text_label", {
                 //   text: "please enter",
                 //   required: true
                 // }),
-                PropertyPaneTextField("wp_prop_text", {
-                  label: "name2",
+                PropertyPaneTextField(Constants.WP_Prop_Text, {
+                  label: strings.WP_prop_text_label,
                   multiline: false,
                   resizable: false,
                   maxLength: 50,
                   onGetErrorMessage: this.validateTextBoxMethod.bind(this),
-                  //errorMessage: 'error msg2',
-                  deferredValidationTime: 1000,
-                  description: "this is textbox2",
-                  placeholder: "this is placeholder text2"
+                  //errorMessage: 'error message',   //not sure about the purpose of this
+                  deferredValidationTime: 500,
+                  description: strings.WP_prop_text_description,
+                  placeholder: strings.WP_prop_text_placeholder
                 }),
-                // PropertyPaneLabel("wp_prop_multiline_label", {
-                //   text: "please enter",
-                //   required: true
-                // }),
-                PropertyPaneTextField("wp_prop_multiline", {
-                  label: "multi line",
+                PropertyPaneTextField(Constants.WP_Prop_Multiline, {
+                  label: strings.WP_prop_multiline_label,
                   multiline: true,
                   resizable: true,
                   maxLength: 120,
                   onGetErrorMessage: this.validateTextBoxMethod.bind(this),
-                  //errorMessage: 'error msg2',
-                  deferredValidationTime: 1000,
-                  description: "this is textbox2",
-                  placeholder: "this is placeholder text2"
+                  //errorMessage: 'error message',   //not sure about the purpose of this
+                  deferredValidationTime: 500,
+                  description: strings.WP_prop_multiline_description,
+                  placeholder: strings.WP_prop_multiline_placeholder
                 }),
                 PropertyPaneHorizontalRule()
               ]
             },
             {
-              groupName: "Page1 group2",
+              groupName: strings.BasicGroupName2,
               groupFields: [
                 //PropertyPaneHorizontalRule(),
-                PropertyPaneCheckbox("wp_prop_checkbox", {
-                  text: "Yes/No",
+                PropertyPaneLabel(Constants.WP_Prop_Checkbox_Label, {
+                  text: strings.WP_prop_checkbox_label_text
+                }),
+                PropertyPaneCheckbox(Constants.WP_Prop_Checkbox, {
+                  text: strings.WP_prop_checkbox_text,
                   checked: true,
                   disabled: false
-                }),                
-                PropertyPaneLabel("wp_prop_link_label", {
-                  text: "My Blog"
                 }),
-                PropertyPaneLink("wp_prop_link", {
-                  text: "Blogs 2 Share",
-                  href: "https://blogs2share.blogspot.com/",
-                  target: "_blank",
+                PropertyPaneLabel(Constants.WP_Prop_Link_Label, {
+                  text: strings.WP_prop_link_label_text
+                }),
+                PropertyPaneLink(Constants.WP_Prop_Link, {
+                  text: strings.WP_prop_link_text,
+                  href: Constants.WP_Prop_Link_Href,
+                  target: Constants.WP_Prop_Link_Target,
                   disabled: false,
                   popupWindowProps: {
                     height: 400,
                     width: 400,
                     positionWindowPosition: 2,
-                    title: "Vikas"
+                    title: strings.WP_prop_link_popupWindowProps_title
                   }
                 }),
               ]
@@ -145,74 +164,78 @@ export default class HelloBasicWorldWebPart extends BaseClientSideWebPart<
         },
         {
           header: {
-            description: "abc"
+            description: strings.PropertyPanePage2_Description
           },
           groups: [
             {
-              groupName: "Page2 group1",
+              groupName: strings.AdvancedGroupName1,
               groupFields: [
-                PropertyPaneHorizontalRule(),
-                PropertyPaneToggle("wp_prop_toggle", {
-                  label: "Enable or Disable?",
-                  key: "toBeToggle",
-                  onText: "Enabled",
-                  offText: "Disabled",
+                PropertyPaneToggle(Constants.WP_Prop_Toggle, {
+                  label: strings.WP_prop_toggle_label,
+                  key: Constants.WP_Prop_Toggle_Key,
+                  onText: strings.WP_prop_toggle_onText,
+                  offText: strings.WP_prop_toggle_offText,
                   disabled: false
                 }),
-                PropertyPaneSlider("wp_prop_slider", {
-                  label: "Slide to select value",
+                PropertyPaneSlider(Constants.WP_Prop_Slider, {
+                  label: strings.WP_prop_slider_label,
                   min: 1,
                   max: 10,
                   step: 1,
                   showValue: true,
                   value: 5,
                   disabled: false
-                })
+                }),
+                PropertyPaneHorizontalRule()
               ]
             },
             {
-              groupName: "Page2 group2",
+              groupName: strings.AdvancedGroupName2,
               groupFields: [
                 //PropertyPaneHorizontalRule(),
-                PropertyPaneDropdown("wp_prop_dropdown", {
-                  label: "Choose qualification",
+                PropertyPaneDropdown(Constants.WP_Prop_Dropdown, {
+                  label: strings.WP_prop_dropdown_label,
                   disabled: false,
-                  options: [
+                  options: [  // dropdown options will populated dynamically in real scenarios
                     { key: "Red", text: "Red", index: 0 },
                     { key: "Blue", text: "Blue", index: 1 },
                     { key: "Black", text: "Black", index: 2 },
                     { key: "Green", text: "Green", index: 3 }
                   ]
                 }),
-                PropertyPaneChoiceGroup("wp_prop_choicegroup", {
-                  // label: "Ch GRP",
+                PropertyPaneChoiceGroup(Constants.WP_Prop_Choicegroup, {
+                  // label: "Choice Group",
                   // options: [
-                  //   { key: "1a", text: "1a" },
-                  //   { key: "1b", text: "1b", checked: true, },
-                  //   { key: "1c", text: "1c", disabled: true },
-                  //   { key: "1d", text: "1d" }
+                  //   { key: "a", text: "a" },
+                  //   { key: "b", text: "b", checked: true, },
+                  //   { key: "c", text: "c", disabled: true },
+                  //   { key: "d", text: "d" }
                   // ]
-                  label: 'File type:',
+                  label: strings.WP_prop_choicegroup,
                   options: [
-                    { key: 'Word', text: 'Word', checked:true,
-                      imageSrc: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/document/png/docx_32x1.png',
+                    {
+                      key: "Word", text: "Word", checked:true,
+                      imageSrc: Constants.WP_Prop_Choicegroup_Option_Img_Word,
                       imageSize: { width: 32, height: 32 },
-                      selectedImageSrc: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/document/png/docx_32x1.png'
+                      selectedImageSrc: Constants.WP_Prop_Choicegroup_Option_Img_Word
                     },
-                    { key: 'Excel', text: 'Excel',
-                      imageSrc: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/document/png/xlsx_32x1.png',
+                    {
+                      key: "Excel", text: "Excel",
+                      imageSrc: Constants.WP_Prop_Choicegroup_Option_Img_Excel,
                       imageSize: { width: 32, height: 32 },
-                      selectedImageSrc: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/document/png/xlsx_32x1.png'
+                      selectedImageSrc: Constants.WP_Prop_Choicegroup_Option_Img_Excel
                     },
-                    { key: 'PowerPoint', text: 'PowerPoint',
-                      imageSrc: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/document/png/pptx_32x1.png',
+                    {
+                      key: "PowerPoint", text: "PowerPoint",
+                      imageSrc: Constants.WP_Prop_Choicegroup_Option_Img_PowerPoint,
                       imageSize: { width: 32, height: 32 },
-                      selectedImageSrc: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/document/png/pptx_32x1.png'
+                      selectedImageSrc: Constants.WP_Prop_Choicegroup_Option_Img_PowerPoint
                     },
-                    { key: 'OneNote', text: 'OneNote',
-                      imageSrc: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/document/png/one_32x1.png',
+                    {
+                      key: "OneNote", text: "OneNote", disabled: true,
+                      imageSrc: Constants.WP_Prop_Choicegroup_Option_Img_OneNote,
                       imageSize: { width: 32, height: 32 },
-                      selectedImageSrc: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/document/png/one_32x1.png'
+                      selectedImageSrc: Constants.WP_Prop_Choicegroup_Option_Img_OneNote
                     }
                   ]
                 })
@@ -226,7 +249,7 @@ export default class HelloBasicWorldWebPart extends BaseClientSideWebPart<
 
   private validateTextBoxMethod(value: string): string {
     if (value === null || value.trim().length === 0) {
-      return "Provide a description";
+      return "Provide the data";
     }
 
     return "";
